@@ -54,6 +54,21 @@ window.DEFAULT_PROJECTS = [
     tags: ["Voxel", "WebGL", "GitHub Pages"]
   },
   {
+    id: "proj-qianli-jiangshan-real",
+    name: "qianli-jiangshan-real",
+    displayName: "江山千里 · 實景寫真卷 (3D-Real)",
+    collection: "art3d",
+    collectionLabel: "3D 數位藝術",
+    description: "方琮《仿王希孟江山千里卷》現實擬真攝影重構（已完成第 01–07 段無縫長幅拼接與第 10 段，待後續補齊完整版）。",
+    employeeId: "emp-spencer",
+    status: "Live",
+    language: "JavaScript",
+    repoUrl: "https://github.com/spencer384/qianli-jiangshan-real",
+    liveUrl: "https://spencer384.github.io/qianli-jiangshan-real/",
+    updatedAt: "2026-11-25T16:05:00Z",
+    tags: ["Photorealistic", "Panorama", "WIP"]
+  },
+  {
     id: "proj-sky-island-diorama",
     name: "sky-island-diorama",
     displayName: "天空之島 · Web 3D 微縮景觀",
