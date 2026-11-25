@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>江山千里 · 原稿與實境上下對照 (3D-Real)</title>
+  <style>
+    :root {
+      --bg: #0e1316;
+      --panel: rgba(20, 27, 31, 0.9);
+      --border: rgba(168, 198, 186, 0.25);
+      --accent: #4ec49b;
+      --gold: #f0c975;
+      --text: #eef3f1;
+      --muted: #9eb0aa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Noto Serif TC", "Microsoft JhengHei", sans-serif;
+      overflow: hidden;
+    }
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background: rgba(14, 19, 22, 0.92);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .seal {
+      width: 34px; height: 34px;
+      background: #b2382b;
+      color: #fff4e0;
+      display: grid; place-items: center;
+      font-size: 11.5px; font-weight: 700; line-height: 1.05;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .brand h1 { font-size: 15.5px; color: var(--gold); letter-spacing: 0.6px; }
+    .brand p { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .badge-wip {
+      display: inline-block;
+      font-size: 10.5px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(240, 201, 117, 0.14);
+      border: 1px solid rgba(240, 201, 117, 0.4);
+      color: var(--gold);
+      margin-left: 8px;
+    }
+    .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .btn:hover { background: rgba(255, 255, 255, 0.16); }
+    .btn.active {
+      background: rgba(78, 196, 155, 0.22);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+    .viewer {
+      position: fixed;
+      inset: 60px 0 42px 0;
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      overflow-y: hidden;
+      cursor: grab;
+      padding: 12px 24px;
+    }
+    .viewer:active { cursor: grabbing; }
+    .compare-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      height: 100%;
+      justify-content: center;
+    }
+    .scroll-row {
+      position: relative;
+      height: calc((100vh - 140px) / 2);
+      display: flex;
+      align-items: center;
+    }
+    .viewer.single-mode .scroll-row.orig-row { display: none; }
+    .viewer.single-mode .scroll-row.real-row { height: calc(100vh - 136px); }
+    .scroll-row img {
+      height: 100%;
+      width: auto;
+      max-width: none;
+      border-radius: 5px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.65);
+      user-select: none;
+      -webkit-user-drag: none;
+      display: block;
+    }
+    .row-tag {
+      position: sticky;
+      left: 16px;
+      z-index: 5;
+      align-self: flex-start;
+      margin-top: 8px;
+      margin-right: -180px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 11.5px;
+      font-weight: 700;
+      backdrop-filter: blur(6px);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .row-tag.orig {
+      background: rgba(42, 34, 22, 0.85);
+      border: 1px solid rgba(240, 201, 117, 0.5);
+      color: var(--gold);
+    }
+    .row-tag.real {
+      background: rgba(16, 36, 30, 0.85);
+      border: 1px solid rgba(78, 196, 155, 0.55);
+      color: #8bf0cc;
+    }
+    .gallery {
+      display: none;
+      position: fixed;
+      inset: 60px 0 42px 0;
+      overflow-y: auto;
+      padding: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 18px;
+    }
+    .gallery.active { display: grid; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-pair {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: #080b0d;
+    }
+    .card-pair img {
+      width: 100%;
+      display: block;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+    }
+    .card-body {
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card-body strong { color: var(--text); }
+    footer {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 20;
+      height: 42px;
+      padding: 0 20px;
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.5px;
+      color: var(--muted);
+      gap: 12px;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 768px) {
+      .brand p, .badge-wip { display: none; }
+      footer span:first-child { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="seal">實景<br/>對照</div>
+      <div>
+        <h1>江山千里 · 原稿與實境上下對照 (3D-Real)<span class="badge-wip">第 01–07 段已完成 · 待補齊完整版</span></h1>
+        <p>上方：清·方琮《仿王希孟江山千里卷》原稿 ／ 下方：現實擬真攝影重構（10,560 × 1,080 同步對齊）</p>
+      </div>
+    </div>
+    <div class="controls">
+      <button id="btn-compare" class="btn active">上下對照全景</button>
+      <button id="btn-single" class="btn">單看實境全景</button>
+      <button id="btn-gallery" class="btn">分段對照一覽 (9 組)</button>
+      <button id="btn-auto" class="btn">自動橫向漫遊</button>
+    </div>
+  </header>
+
+  <main id="pano-viewer" class="viewer">
+    <div class="compare-stack">
+      <div class="scroll-row orig-row">
+        <span class="row-tag orig">原稿長卷 · 清·方琮青綠山水</span>
+        <img src="./assets/scroll_orig_01_to_07.jpg" alt="原稿長卷 第01至07段" />
+      </div>
+      <div class="scroll-row real-row">
+        <span class="row-tag real">實境攝影 · 現實擬真重構</span>
+        <img src="./assets/scroll_real_01_to_07.jpg" alt="實境攝影長卷 第01至07段" />
+      </div>
+    </div>
+  </main>
+
+  <section id="gallery-view" class="gallery"></section>
+
+  <footer>
+    <span>左右拖曳、滾輪捲動即可同步對照上下兩幅長卷 ｜ 第 08、09、11–17 段將於後續更新補齊</span>
+    <span><a href="https://spencer384.github.io/" target="_blank">← 返回 風的異想實驗室</a></span>
+  </footer>
+
+  <script>
+    const viewer = document.getElementById('pano-viewer');
+    const gallery = document.getElementById('gallery-view');
+    const btnCompare = document.getElementById('btn-compare');
+    const btnSingle = document.getElementById('btn-single');
+    const btnGallery = document.getElementById('btn-gallery');
+    const btnAuto = document.getElementById('btn-auto');
+
+    const slices = [
+      { title: '精選示範 · 正中主峰與山灣古村', orig: './assets/slices_orig/sample_section.png', real: './assets/sample_section_real.jpg', tag: '16:9 對照' },
+      { title: '第 01 段 · 卷尾雙峰與村橋', orig: './assets/slices_orig/orig_01.png', real: './assets/slices_real/real_01.jpg', tag: '已併入長卷' },
+      { title: '第 02 段 · 左端平遠大湖', orig: './assets/slices_orig/orig_02.png', real: './assets/slices_real/real_02.jpg', tag: '已併入長卷' },
+      { title: '第 03 段 · 蘆洲沙嘴與漁村', orig: './assets/slices_orig/orig_03.png', real: './assets/slices_real/real_03.jpg', tag: '已併入長卷' },
+      { title: '第 04 段 · 左中銳峰群', orig: './assets/slices_orig/orig_04.png', real: './assets/slices_real/real_04.jpg', tag: '已併入長卷' },
+      { title: '第 05 段 · 中左層巒山寺', orig: './assets/slices_orig/orig_05.png', real: './assets/slices_real/real_05.jpg', tag: '已併入長卷' },
+      { title: '第 06 段 · 主峰西側群峰', orig: './assets/slices_orig/orig_06.png', real: './assets/slices_real/real_06.jpg', tag: '已併入長卷' },
+      { title: '第 07 段 · 正中特大主峰與飛瀑', orig: './assets/slices_orig/orig_07.png', real: './assets/slices_real/real_07.jpg', tag: '已併入長卷' },
+      { title: '第 10 段 · 右一大主山群', orig: './assets/slices_orig/orig_10.png', real: './assets/slices_real/real_10.jpg', tag: '單段已完成' },
+    ];
+
+    slices.forEach((s) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="card-pair">
+          <img src="${s.orig}" alt="${s.title} 原稿" loading="lazy" />
+          <img src="${s.real}" alt="${s.title} 實境" loading="lazy" />
+        </div>
+        <div class="card-body"><strong>${s.title}</strong><span>${s.tag}</span></div>
+      `;
+      gallery.appendChild(card);
+    });
+
+    function setTab(mode) {
+      btnCompare.classList.toggle('active', mode === 'compare');
+      btnSingle.classList.toggle('active', mode === 'single');
+      btnGallery.classList.toggle('active', mode === 'gallery');
+      if (mode === 'gallery') {
+        viewer.style.display = 'none';
+        gallery.classList.add('active');
+        autoPan = false;
+        btnAuto.classList.remove('active');
+      } else {
+        viewer.style.display = 'flex';
+        gallery.classList.remove('active');
+        viewer.classList.toggle('single-mode', mode === 'single');
+      }
+    }
+
+    btnCompare.addEventListener('click', () => setTab('compare'));
+    btnSingle.addEventListener('click', () => setTab('single'));
+    btnGallery.addEventListener('click', () => setTab('gallery'));
+
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    viewer.addEventListener('mousedown', (e) => {
+      isDown = true;
+      autoPan = false;
+      btnAuto.classList.remove('active');
+      startX = e.pageX - viewer.offsetLeft;
+      scrollLeft = viewer.scrollLeft;
+    });
+    window.addEventListener('mouseup', () => { isDown = false; });
+    viewer.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - viewer.offsetLeft;
+      viewer.scrollLeft = scrollLeft - (x - startX) * 1.4;
+    });
+    viewer.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        viewer.scrollLeft += e.deltaY * 1.6;
+      }
+    }, { passive: false });
+
+    let autoPan = false;
+    let dir = 1;
+    btnAuto.addEventListener('click', () => {
+      autoPan = !autoPan;
+      btnAuto.classList.toggle('active', autoPan);
+    });
+    function tick() {
+      if (autoPan && viewer.style.display !== 'none') {
+        viewer.scrollLeft += 1.2 * dir;
+        if (viewer.scrollLeft + viewer.clientWidth >= viewer.scrollWidth - 2) dir = -1;
+        else if (viewer.scrollLeft <= 0) dir = 1;
+      }
+      requestAnimationFrame(tick);
+    }
+    tick();
+  </script>
+</body>
+</html>
