@@ -16,6 +16,13 @@
 
   let projects = loadState(STORAGE_KEYS.PROJECTS, window.DEFAULT_PROJECTS);
   let employees = loadState(STORAGE_KEYS.EMPLOYEES, window.DEFAULT_EMPLOYEES);
+
+  // 確保新增的預設管理員員工會自動合併進現有紀錄
+  window.DEFAULT_EMPLOYEES.forEach((defEmp) => {
+    if (!employees.some((e) => e.id === defEmp.id)) {
+      employees.push(structuredClone(defEmp));
+    }
+  });
   let activeView = "projects";
   let categoryFilter = "all";
   let employeeFilter = "all";
@@ -234,16 +241,33 @@
         ? `<img src="${escapeHtml(emp.avatar)}" alt="${escapeHtml(emp.name)}" />`
         : escapeHtml(emp.name.slice(0, 1).toUpperCase());
 
+      const permsHtml = (emp.permissions || []).length
+        ? `<div class="admin-perms">${emp.permissions.map((p) => `<span class="perm-tag">${escapeHtml(p)}</span>`).join("")}</div>`
+        : "";
+
+      const adminQuickLinks = emp.isAdmin
+        ? `<div class="admin-quick-links">
+            <a class="entry-pill primary-entry" href="https://github.com/${encodeURIComponent(emp.github || "spencer384")}?tab=repositories" target="_blank" rel="noopener">⌥ 全部 Repo 管理</a>
+            <a class="entry-pill" href="https://github.com/settings/profile" target="_blank" rel="noopener">⚙ 帳號設定</a>
+            <a class="entry-pill" href="https://github.com/settings/tokens" target="_blank" rel="noopener">🔑 Token 權限</a>
+          </div>`
+        : "";
+
       return `
-        <div class="employee-card">
+        <div class="employee-card ${emp.isAdmin ? "is-admin" : ""}">
           <div class="employee-card-head">
             <div class="employee-avatar-lg">${avatarHtml}</div>
             <div class="employee-info">
-              <h3>${escapeHtml(emp.name)}</h3>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <h3>${escapeHtml(emp.name)}</h3>
+                ${emp.isAdmin ? `<span class="admin-badge">GitHub Admin</span>` : ""}
+              </div>
               <p>${escapeHtml(emp.role || "Developer")} · @${escapeHtml(emp.github || "local")}</p>
             </div>
           </div>
           <div style="font-size:12.5px;color:var(--text-secondary)">所屬：${escapeHtml(emp.department || "風的異想實驗室")}</div>
+          ${permsHtml}
+          ${adminQuickLinks}
           <div class="employee-stats-row">
             <span>負責專案：<strong>${owned.length}</strong> 個</span>
             <span>Live 網站：<strong>${liveCount}</strong> 個</span>

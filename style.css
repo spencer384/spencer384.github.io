@@ -816,6 +816,40 @@ body {
   box-shadow: var(--shadow-sm);
 }
 
+.employee-card.is-admin {
+  border-color: var(--tiffany-border);
+}
+
+.admin-badge {
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--tiffany-mist);
+  color: var(--tiffany);
+  border: 1px solid var(--tiffany-border);
+}
+
+.admin-perms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.perm-tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--surface-subtle);
+  color: var(--text-secondary);
+}
+
+.admin-quick-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 .employee-card-head {
   display: flex;
   align-items: center;

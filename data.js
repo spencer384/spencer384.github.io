@@ -6,7 +6,18 @@ window.DEFAULT_EMPLOYEES = [
     github: "spencer384",
     role: "實驗室主理人 · Lead Architect",
     department: "風的異想實驗室",
-    avatar: "https://avatars.githubusercontent.com/u/132677738?v=4"
+    avatar: "https://avatars.githubusercontent.com/u/132677738?v=4",
+    isAdmin: true
+  },
+  {
+    id: "emp-github-admin",
+    name: "GitHub 管理員",
+    github: "spencer384",
+    role: "GitHub Admin · 儲存庫與權限管理員",
+    department: "平台維運與權限管理部",
+    avatar: "",
+    isAdmin: true,
+    permissions: ["Repo 管理", "Issues / PR 審核", "Actions CI/CD", "Pages 部署", "成員權限"]
   }
 ];
 
