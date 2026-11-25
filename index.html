@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>風的異想實驗室 — GitHub 精品專案管理入口</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Tiffany Signature Top Ribbon -->
+  <div class="tiffany-ribbon" aria-hidden="true"></div>
+
+  <!-- Frosted Glass Boutique Navigation -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <div class="brand">
+        <div class="brand-crest" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">風的異想實驗室</span>
+          <span class="brand-subtitle">WIND'S WHIMSICAL LAB · GITHUB ATELIER</span>
+        </div>
+      </div>
+
+      <!-- Global Search Bar -->
+      <div class="search-wrapper">
+        <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input
+          type="text"
+          id="globalSearch"
+          class="search-input"
+          placeholder="搜尋專案、分類、員工或管理入口 (Issues, Actions, Pages, Settings)..."
+          autocomplete="off"
+        />
+        <button id="clearSearchBtn" class="clear-search hidden" title="清除搜尋" aria-label="清除搜尋">✕</button>
+        <kbd class="shortcut-badge" id="openPaletteHint" title="開啟快速指令搜尋">⌘K</kbd>
+      </div>
+
+      <!-- Top Actions -->
+      <div class="nav-actions">
+        <button class="btn btn-ghost" id="syncGithubBtn" title="從 GitHub API 同步最新專案">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <polyline points="1 20 1 14 7 14"></polyline>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+          <span>同步 GitHub</span>
+        </button>
+        <button class="btn btn-primary" id="addProjectBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>新增專案</span>
+        </button>
+        <button class="btn-icon" id="themeToggleBtn" title="切換日夜精品模式" aria-label="切換日夜精品模式">
+          <svg id="themeIconSun" class="hidden" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg id="themeIconMoon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Boutique Hero Header -->
+    <section class="hero-section">
+      <div class="hero-card">
+        <div class="hero-top">
+          <div>
+            <p class="hero-eyebrow">CURATED GITHUB COLLECTION · SPENCER384</p>
+            <h1 class="hero-title">風的異想實驗室</h1>
+            <p class="hero-desc">匯聚 3D 數位藝術長卷、浮空微縮世界、Godot 遊戲與系統工具的精品專案入口，提供一鍵搜尋與直達每個專案的 GitHub 管理中心。</p>
+          </div>
+          <div class="owner-pill" id="ownerProfilePill">
+            <img src="https://avatars.githubusercontent.com/u/132677738?v=4" alt="spencer384" class="owner-avatar" />
+            <div class="owner-meta">
+              <span class="owner-name">spencer384</span>
+              <span class="owner-role">實驗室主理人 · GitHub</span>
+            </div>
+            <a href="https://github.com/spencer384?tab=repositories" target="_blank" rel="noopener" class="owner-link" title="開啟 GitHub 個人儲存庫">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Bento Luxury Stats -->
+        <div class="bento-stats">
+          <div class="stat-card" data-quick-filter="all">
+            <span class="stat-label">典藏專案總數</span>
+            <span class="stat-value" id="statTotal">0</span>
+            <span class="stat-sub">GitHub 儲存庫全覽</span>
+          </div>
+          <div class="stat-card" data-quick-filter="live">
+            <span class="stat-label">線上展覽網站</span>
+            <span class="stat-value" id="statLive">0</span>
+            <span class="stat-sub">GitHub Pages Live</span>
+          </div>
+          <div class="stat-card" data-quick-filter="game">
+            <span class="stat-label">互動遊戲與地圖</span>
+            <span class="stat-value" id="statGame">0</span>
+            <span class="stat-sub">Godot &amp; Warcraft III</span>
+          </div>
+          <div class="stat-card" id="openEmployeeTabCard">
+            <span class="stat-label">創作者與團隊</span>
+            <span class="stat-value" id="statEmployees">0</span>
+            <span class="stat-sub">點擊管理成員權限</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- View Switcher & Collection Filters -->
+    <section class="controls-bar">
+      <div class="segmented-control" role="tablist" aria-label="主檢視切換">
+        <button class="seg-btn active" data-view="projects" role="tab" aria-selected="true">專案典藏</button>
+        <button class="seg-btn" data-view="entries" role="tab" aria-selected="false">管理入口索引</button>
+        <button class="seg-btn" data-view="employees" role="tab" aria-selected="false">成員與權限</button>
+      </div>
+
+      <div class="filter-pills" id="categoryFilters">
+        <button class="pill active" data-filter="all">全部系列</button>
+        <button class="pill" data-filter="art3d">3D 數位藝術</button>
+        <button class="pill" data-filter="game">遊戲與地圖</button>
+        <button class="pill" data-filter="tools">工具與系統</button>
+        <button class="pill" data-filter="live">僅看 Live 網站</button>
+      </div>
+
+      <div class="employee-filter-wrap">
+        <select id="employeeSelect" class="luxury-select" aria-label="依創作者篩選">
+          <option value="all">所有創作者</option>
+        </select>
+        <select id="sortSelect" class="luxury-select" aria-label="排序方式">
+          <option value="updated">最近更新</option>
+          <option value="name">名稱 (A–Z)</option>
+          <option value="status">狀態優先</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- View 1: Curated Projects Grid -->
+    <section id="projectsView" class="view-section">
+      <div id="projectsGrid" class="projects-grid"></div>
+      <div id="emptyState" class="empty-state hidden">
+        <div class="empty-icon">◆</div>
+        <h3>找不到符合條件的專案</h3>
+        <p>請嘗試調整搜尋關鍵字、清除系列篩選，或點擊「新增專案」收錄新作品。</p>
+        <button class="btn btn-secondary" id="resetFiltersBtn">重設所有篩選</button>
+      </div>
+    </section>
+
+    <!-- View 2: Searchable Management Entry Points Directory -->
+    <section id="entriesView" class="view-section hidden">
+      <div class="section-header-inline">
+        <div>
+          <h2 class="section-title">專案管理入口索引</h2>
+          <p class="section-desc">快速搜尋並直達每個 GitHub 專案的 Repository、Live 網站、Issues、Pull Requests、Actions、Pages 與 Settings。</p>
+        </div>
+        <div class="entry-type-pills" id="entryTypePills">
+          <button class="pill active" data-entry-type="all">全部入口</button>
+          <button class="pill" data-entry-type="repo">Repo</button>
+          <button class="pill" data-entry-type="live">Live 網站</button>
+          <button class="pill" data-entry-type="issues">Issues</button>
+          <button class="pill" data-entry-type="actions">Actions</button>
+          <button class="pill" data-entry-type="pages">Pages 設定</button>
+          <button class="pill" data-entry-type="settings">Settings</button>
+        </div>
+      </div>
+      <div id="entriesDirectory" class="entries-directory"></div>
+    </section>
+
+    <!-- View 3: Team / Employee Management -->
+    <section id="employeesView" class="view-section hidden">
+      <div class="section-header-inline">
+        <div>
+          <h2 class="section-title">創作者與團隊管理</h2>
+          <p class="section-desc">管理專案負責人與協作成員，點擊成員卡片即可檢視其負責的專案系列。</p>
+        </div>
+        <button class="btn btn-primary" id="addEmployeeBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>新增成員</span>
+        </button>
+      </div>
+      <div id="employeesGrid" class="employees-grid"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span>風的異想實驗室 · Wind's Whimsical Lab · GitHub Atelier</span>
+      <div class="footer-actions">
+        <button class="link-btn" id="exportDataBtn">匯出 JSON 備份</button>
+        <label class="link-btn" for="importDataInput">匯入備份</label>
+        <input type="file" id="importDataInput" accept=".json" class="hidden" />
+        <button class="link-btn" id="resetDefaultBtn">還原預設典藏</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Spotlight Command Palette (⌘K) -->
+  <div id="spotlightOverlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-label="快速搜尋專案與管理入口">
+    <div class="spotlight-modal">
+      <div class="spotlight-input-wrap">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="spotlightInput" placeholder="搜尋專案名稱、系列或管理入口（例如：千里江山、Issues、Actions、Pages）..." autocomplete="off" />
+        <kbd class="shortcut-badge">ESC</kbd>
+      </div>
+      <div id="spotlightResults" class="spotlight-results"></div>
+    </div>
+  </div>
+
+  <!-- Project Management Inspector Modal -->
+  <div id="projectModalOverlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-label="專案管理中心">
+    <div class="inspector-modal">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="badge-pill" id="modalCategoryBadge">GitHub</span>
+          <h2 id="modalProjectTitle">專案名稱</h2>
+        </div>
+        <button class="btn-icon" id="closeProjectModalBtn" aria-label="關閉">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-desc" id="modalProjectDesc"></p>
+
+        <div class="modal-meta-grid">
+          <div class="meta-box">
+            <label for="modalEmployeeSelect">負責創作者 / 成員</label>
+            <select id="modalEmployeeSelect" class="luxury-select full"></select>
+          </div>
+          <div class="meta-box">
+            <label for="modalStatusSelect">專案狀態</label>
+            <select id="modalStatusSelect" class="luxury-select full">
+              <option value="Live">Live 線上展覽中</option>
+              <option value="Active">Active 持續開發</option>
+              <option value="Private">Private 私人典藏</option>
+              <option value="Archived">Archived 已封存</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="entry-search-header">
+          <h3>管理入口 (Management Entry Points)</h3>
+          <input type="text" id="modalEntrySearch" class="mini-search" placeholder="搜尋此專案的管理入口..." />
+        </div>
+        <div id="modalEntriesList" class="modal-entries-list"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-danger-ghost" id="deleteProjectBtn">移除此專案</button>
+        <div class="modal-footer-right">
+          <button class="btn btn-primary" id="saveProjectChangesBtn">儲存變更</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Project Modal -->
+  <div id="addProjectOverlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-label="新增專案">
+    <div class="inspector-modal compact">
+      <div class="modal-header">
+        <h2>收錄新專案至實驗室</h2>
+        <button class="btn-icon" id="closeAddProjectBtn" aria-label="關閉">✕</button>
+      </div>
+      <form id="addProjectForm" class="modal-form">
+        <div class="form-grid-2">
+          <div class="form-row">
+            <label>專案識別名 (Repo Name) *</label>
+            <input type="text" name="name" required placeholder="例如：my-new-project" />
+          </div>
+          <div class="form-row">
+            <label>展示標題</label>
+            <input type="text" name="displayName" placeholder="例如：風之微縮建築" />
+          </div>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-row">
+            <label>負責成員 *</label>
+            <select name="employeeId" id="newProjectEmployeeSelect" class="luxury-select full" required></select>
+          </div>
+          <div class="form-row">
+            <label>所屬系列 *</label>
+            <select name="collection" class="luxury-select full" required>
+              <option value="art3d">3D 數位藝術</option>
+              <option value="game">遊戲與地圖</option>
+              <option value="tools">工具與系統</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-row">
+            <label>主要技術 / 語言</label>
+            <input type="text" name="language" placeholder="JavaScript, GDScript, Python..." />
+          </div>
+          <div class="form-row">
+            <label>Live 展示網址 (選填)</label>
+            <input type="url" name="liveUrl" placeholder="https://spencer384.github.io/..." />
+          </div>
+        </div>
+        <div class="form-row">
+          <label>GitHub Repository URL *</label>
+          <input type="url" name="repoUrl" required placeholder="https://github.com/spencer384/..." />
+        </div>
+        <div class="form-row">
+          <label>專案簡介</label>
+          <textarea name="description" rows="2" placeholder="簡述專案靈感與技術亮點..."></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="cancelAddProjectBtn">取消</button>
+          <button type="submit" class="btn btn-primary">收錄專案</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Employee Modal -->
+  <div id="addEmployeeOverlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-label="新增成員">
+    <div class="inspector-modal compact">
+      <div class="modal-header">
+        <h2>新增實驗室成員</h2>
+        <button class="btn-icon" id="closeAddEmployeeBtn" aria-label="關閉">✕</button>
+      </div>
+      <form id="addEmployeeForm" class="modal-form">
+        <div class="form-grid-2">
+          <div class="form-row">
+            <label>成員姓名 *</label>
+            <input type="text" name="name" required placeholder="例如：林子軒" />
+          </div>
+          <div class="form-row">
+            <label>GitHub 帳號 *</label>
+            <input type="text" name="github" required placeholder="例如：spencer384" />
+          </div>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-row">
+            <label>職稱 / 角色</label>
+            <input type="text" name="role" placeholder="Creative Technologist" />
+          </div>
+          <div class="form-row">
+            <label>部門 / 組別</label>
+            <input type="text" name="department" placeholder="3D &amp; Interactive Lab" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="cancelAddEmployeeBtn">取消</button>
+          <button type="submit" class="btn btn-primary">新增成員</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
