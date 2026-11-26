@@ -69,6 +69,21 @@ window.DEFAULT_PROJECTS = [
     tags: ["Photorealistic", "Panorama", "Full Scroll"]
   },
   {
+    id: "proj-isu-1996-3d-map",
+    name: "isu-1996-3d-map",
+    displayName: "1996 義守大學（高雄工學院）3D 實景地圖",
+    collection: "art3d",
+    collectionLabel: "3D 數位藝術",
+    description: "依 1996–1997 年校友老照片與校園平面圖重建之觀音山東麓 3D 實景地圖，包含 125 階百階、紅色舊水塔、高層男宿與低層女宿及操場校慶拔河。",
+    employeeId: "emp-spencer",
+    status: "Live",
+    language: "JavaScript",
+    repoUrl: "https://github.com/spencer384/isu-1996-3d-map",
+    liveUrl: "https://spencer384.github.io/isu-1996-3d-map/",
+    updatedAt: "2026-11-26T16:25:00Z",
+    tags: ["Three.js", "PBR", "3D Campus", "GitHub Pages"]
+  },
+  {
     id: "proj-sky-island-diorama",
     name: "sky-island-diorama",
     displayName: "天空之島 · Web 3D 微縮景觀",
