@@ -92,7 +92,7 @@
     }
     .viewer {
       position: fixed;
-      inset: 60px 0 42px 0;
+      inset: 60px 0 92px 0;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -173,7 +173,7 @@
     .gallery {
       display: none;
       position: fixed;
-      inset: 60px 0 42px 0;
+      inset: 60px 0 92px 0;
       overflow-y: auto;
       padding: 20px;
       grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
@@ -226,6 +226,272 @@
     }
     footer a { color: var(--accent); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
+    .drawer {
+      position: fixed;
+      top: 60px;
+      right: 0;
+      bottom: 92px;
+      width: min(380px, 92vw);
+      background: rgba(16, 22, 26, 0.96);
+      border-left: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      z-index: 25;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.24s ease;
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .drawer-header h2 { font-size: 14.5px; color: var(--gold); }
+    .drawer-close {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 20px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .comment-form {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .form-row { display: flex; gap: 8px; }
+    .comment-form input,
+    .comment-form select,
+    .comment-form textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      padding: 7px 10px;
+      font-size: 12px;
+      font-family: inherit;
+    }
+    .comment-form select option { background: #141b1f; color: var(--text); }
+    .comment-form textarea { resize: vertical; min-height: 64px; }
+    .loc-check {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .loc-check input { width: auto; }
+    .form-actions { display: flex; gap: 8px; }
+    .btn-primary {
+      flex: 1;
+      background: rgba(78, 196, 155, 0.25);
+      border: 1px solid var(--accent);
+      color: #fff;
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-primary:hover { background: rgba(78, 196, 155, 0.38); }
+    .comment-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .comment-item {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .comment-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .comment-author { color: var(--gold); font-weight: 700; font-size: 12px; }
+    .comment-cat {
+      font-size: 10.5px;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: rgba(78, 196, 155, 0.16);
+      color: #8bf0cc;
+      border: 1px solid rgba(78, 196, 155, 0.35);
+    }
+    .comment-text { font-size: 12.5px; line-height: 1.5; color: var(--text); white-space: pre-wrap; }
+    .comment-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+    }
+    .mini-btn {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .mini-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.15); }
+    .drawer-footer {
+      padding: 10px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+    }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      background: rgba(6, 10, 12, 0.72);
+      backdrop-filter: blur(6px);
+      display: none;
+      place-items: center;
+      padding: 20px;
+    }
+    .modal-backdrop.open { display: grid; }
+    .modal {
+      width: min(680px, 95vw);
+      max-height: 84vh;
+      background: rgba(18, 24, 28, 0.98);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.65);
+    }
+    .modal-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h2 { font-size: 16px; color: var(--gold); }
+    .modal-body {
+      padding: 16px 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--text);
+    }
+    .modal-body h3 {
+      font-size: 14px;
+      color: var(--accent);
+      margin-bottom: 6px;
+      border-left: 3px solid var(--accent);
+      padding-left: 8px;
+    }
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 8px;
+    }
+    .guide-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .guide-card strong { color: var(--gold); display: block; margin-bottom: 2px; }
+    .changelog-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .changelog-list li {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 9px 12px;
+    }
+    .ver-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 4px;
+      background: rgba(240, 201, 117, 0.16);
+      color: var(--gold);
+      margin-right: 6px;
+    }
+    .nav-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 42px;
+      height: 50px;
+      z-index: 20;
+      background: rgba(14, 19, 22, 0.94);
+      border-top: 1px solid var(--border);
+      padding: 6px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .nav-track {
+      position: relative;
+      flex: 1;
+      height: 36px;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #080b0d;
+      cursor: pointer;
+    }
+    .nav-track img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.72;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+    .nav-thumb {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      border: 2px solid var(--gold);
+      background: rgba(240, 201, 117, 0.18);
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.38);
+      pointer-events: none;
+    }
+    .nav-pct {
+      font-size: 11.5px;
+      color: var(--gold);
+      min-width: 44px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
     @media (max-width: 768px) {
       .brand p, .badge-wip { display: none; }
       footer span:first-child { display: none; }
@@ -252,6 +518,8 @@
       <button id="btn-zoom-reset" class="btn" title="重設為 100%">1:1</button>
       <div class="sep"></div>
       <button id="btn-auto" class="btn">自動漫遊</button>
+      <button id="btn-comments" class="btn">💬 評論建議 (<span id="comment-count">0</span>)</button>
+      <button id="btn-history" class="btn">📜 修改歷程與說明</button>
     </div>
   </header>
 
@@ -274,8 +542,77 @@
 
   <section id="gallery-view" class="gallery"></section>
 
+  <aside id="comment-drawer" class="drawer" aria-label="觀賞者評論與修改建議">
+    <div class="drawer-header">
+      <h2>💬 觀賞者評論與修改建議</h2>
+      <button id="btn-drawer-close" class="drawer-close" title="關閉">×</button>
+    </div>
+    <form id="comment-form" class="comment-form">
+      <div class="form-row">
+        <input id="c-author" type="text" placeholder="您的稱呼（預設：訪客）" maxlength="24" />
+        <select id="c-cat">
+          <option value="修改建議">✏️ 修改建議</option>
+          <option value="畫風色彩">🎨 畫風／色彩</option>
+          <option value="地形建築">⛰️ 地形／建築</option>
+          <option value="賞析評論">👍 整體賞析</option>
+        </select>
+      </div>
+      <textarea id="c-text" placeholder="寫下您對目前畫面段落的評論、細節修正建議或靈感..." required></textarea>
+      <label class="loc-check">
+        <input id="c-lock-pos" type="checkbox" checked />
+        <span>📍 附帶目前長卷位置與縮放倍率（方便一鍵定位檢視）</span>
+      </label>
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">新增評論建議</button>
+        <button type="button" id="btn-gh-issue" class="btn" title="同步開啟 GitHub Issue 提交公開建議">提交 GitHub</button>
+      </div>
+    </form>
+    <div id="comment-list" class="comment-list"></div>
+    <div class="drawer-footer">
+      <button id="btn-export-md" class="btn" style="flex:1;">📋 複製全部建議 (Markdown)</button>
+    </div>
+  </aside>
+
+  <div id="nav-bar" class="nav-bar">
+    <div id="nav-track" class="nav-track" title="點擊或拖曳瀏覽全卷">
+      <img src="./assets/scroll_real_full.jpg" alt="全圖導覽縮圖" />
+      <div id="nav-thumb" class="nav-thumb"></div>
+    </div>
+    <span id="nav-pct" class="nav-pct">0%</span>
+  </div>
+
+  <div id="history-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-label="專案修改歷程與操作說明">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>📜 修改歷程與操作說明</h2>
+        <button id="btn-history-close" class="drawer-close" title="關閉">×</button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <h3>操作說明</h3>
+          <div class="guide-grid">
+            <div class="guide-card"><strong>🔍 滑鼠滾輪（直接縮放）</strong>以游標為中心同步放大／縮小上下兩幅長卷（100%～450%），雙擊畫面可快速放大／復原。</div>
+            <div class="guide-card"><strong>↔️ Ctrl + 滾輪 / 左鍵拖曳</strong>按住 Ctrl+滾輪可左右橫移；左鍵按住拖曳支援 2D 上下左右同步平移。</div>
+            <div class="guide-card"><strong>🎯 鏡像對照準心 & 導覽條</strong>滑鼠懸停於任一長卷時，另一幅同座標處將出現金色準心；點擊或拖曳下方全圖進度條可快速跳轉。</div>
+            <div class="guide-card"><strong>💬 評論與修改建議</strong>開啟「評論建議」可鎖定目前座標與縮放倍率，支援一鍵跳轉定位、複製 Markdown 或提交 GitHub Issues。</div>
+          </div>
+        </div>
+        <div>
+          <h3>修改與製作歷程 (Changelog)</h3>
+          <ul class="changelog-list">
+            <li><span class="ver-tag">v1.4 · 2026-11-26</span>新增下方「全圖縮圖導覽進度條」（支援點擊／拖曳跳轉與可視範圍框選），調整滑鼠滾輪為直接縮放、Ctrl+滾輪為橫移，並加入本修改歷程與說明視窗。</li>
+            <li><span class="ver-tag">v1.3 · 2026-11-26</span>依原畫比例重製第 17 段（卷首孤峰與低緩松林丘陵）並重新拼接全卷；新增「觀賞者評論與修改建議」側邊抽屜（含位置標註與 GitHub Issues 串接）。</li>
+            <li><span class="ver-tag">v1.2 · 2026-11-26</span>加入「雙軸同步縮放（100%～450%）」、2D 同步平移與跨卷「游標鏡像對照準心」。</li>
+            <li><span class="ver-tag">v1.1 · 2026-11-26</span>補齊第 08、09、11–17 段實景圖，完成全 17 段（24,960 × 1,080）原稿與實境長卷無縫羽化拼接，升級為上下同步對照介面。</li>
+            <li><span class="ver-tag">v1.0 · 2026-11-25</span>完成第 01–07 段長幅拼接與正中主峰示範圖，建立 <code>qianli-jiangshan-real</code> 專案並收錄至「風的異想實驗室」。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer>
-    <span>拖曳平移 · Ctrl+滾輪（或右上角 ＋/－）同步放大比對 · 滑鼠懸停自動顯示鏡像準心</span>
+    <span>滑鼠滾輪縮放 · Ctrl+滾輪橫移 · 左鍵拖曳 2D 平移 · 懸停顯示鏡像準心</span>
     <span><a href="https://spencer384.github.io/" target="_blank">← 返回 風的異想實驗室</a></span>
   </footer>
 
@@ -283,6 +620,10 @@
     const viewer = document.getElementById('pano-viewer');
     const origRow = document.getElementById('orig-row');
     const realRow = document.getElementById('real-row');
+    const navBar = document.getElementById('nav-bar');
+    const navTrack = document.getElementById('nav-track');
+    const navThumb = document.getElementById('nav-thumb');
+    const navPct = document.getElementById('nav-pct');
     const origStage = document.getElementById('orig-stage');
     const realStage = document.getElementById('real-stage');
     const origDot = document.getElementById('orig-dot');
@@ -334,16 +675,56 @@
     const MAX_ZOOM = 4.5;
     let isSyncing = false;
 
+    function updateNavBar() {
+      const row = viewer.classList.contains('single-mode') ? realRow : origRow;
+      const total = Math.max(1, row.scrollWidth);
+      const vis = Math.min(total, row.clientWidth);
+      const leftRatio = Math.min(1, Math.max(0, row.scrollLeft / total));
+      const widthRatio = Math.min(1, Math.max(0.03, vis / total));
+      navThumb.style.left = `${leftRatio * 100}%`;
+      navThumb.style.width = `${widthRatio * 100}%`;
+
+      const maxScroll = Math.max(1, total - vis);
+      const pct = Math.round((row.scrollLeft / maxScroll) * 100);
+      navPct.textContent = `${Math.min(100, Math.max(0, pct))}%`;
+    }
+
     function syncScroll(source, target) {
       if (isSyncing) return;
       isSyncing = true;
       target.scrollLeft = source.scrollLeft;
       target.scrollTop = source.scrollTop;
+      updateNavBar();
       requestAnimationFrame(() => { isSyncing = false; });
     }
 
     origRow.addEventListener('scroll', () => syncScroll(origRow, realRow));
     realRow.addEventListener('scroll', () => syncScroll(realRow, origRow));
+
+    let navDragging = false;
+    function scrubNav(clientX) {
+      autoPan = false;
+      btnAuto.classList.remove('active');
+      const rect = navTrack.getBoundingClientRect();
+      const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+      const row = viewer.classList.contains('single-mode') ? realRow : origRow;
+      const targetLeft = ratio * row.scrollWidth - row.clientWidth / 2;
+      origRow.scrollLeft = targetLeft;
+      realRow.scrollLeft = targetLeft;
+      updateNavBar();
+    }
+    navTrack.addEventListener('pointerdown', (e) => {
+      navDragging = true;
+      navTrack.setPointerCapture(e.pointerId);
+      scrubNav(e.clientX);
+    });
+    navTrack.addEventListener('pointermove', (e) => {
+      if (navDragging) scrubNav(e.clientX);
+    });
+    navTrack.addEventListener('pointerup', () => { navDragging = false; });
+    window.addEventListener('resize', updateNavBar);
+    document.getElementById('orig-img').addEventListener('load', updateNavBar);
+    document.getElementById('real-img').addEventListener('load', updateNavBar);
 
     function setZoom(nextZoom, anchorRow = realRow, clientX = null, clientY = null) {
       const clamped = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, nextZoom));
@@ -367,6 +748,7 @@
       origRow.scrollTop = nextTop;
       realRow.scrollLeft = nextLeft;
       realRow.scrollTop = nextTop;
+      updateNavBar();
     }
 
     document.getElementById('btn-zoom-in').addEventListener('click', () => setZoom(zoom * 1.35));
@@ -402,13 +784,13 @@
       });
 
       row.addEventListener('wheel', (e) => {
+        e.preventDefault();
         if (e.ctrlKey || e.metaKey) {
-          e.preventDefault();
-          const factor = e.deltaY < 0 ? 1.18 : 1 / 1.18;
+          const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+          row.scrollLeft += delta * 1.8;
+        } else {
+          const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
           setZoom(zoom * factor, row, e.clientX, e.clientY);
-        } else if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && zoom <= 1.05) {
-          e.preventDefault();
-          row.scrollLeft += e.deltaY * 1.6;
         }
       }, { passive: false });
 
@@ -435,13 +817,16 @@
       btnGallery.classList.toggle('active', mode === 'gallery');
       if (mode === 'gallery') {
         viewer.style.display = 'none';
+        navBar.style.display = 'none';
         gallery.classList.add('active');
         autoPan = false;
         btnAuto.classList.remove('active');
       } else {
         viewer.style.display = 'flex';
+        navBar.style.display = 'flex';
         gallery.classList.remove('active');
         viewer.classList.toggle('single-mode', mode === 'single');
+        updateNavBar();
       }
     }
 
@@ -465,6 +850,164 @@
       requestAnimationFrame(tick);
     }
     tick();
+
+    // --- Viewer Comments & Modification Suggestions ---
+    const STORAGE_KEY = 'qianli_real_comments_v1';
+    const drawer = document.getElementById('comment-drawer');
+    const btnComments = document.getElementById('btn-comments');
+    const commentCountEl = document.getElementById('comment-count');
+    const commentListEl = document.getElementById('comment-list');
+    const commentForm = document.getElementById('comment-form');
+
+    function loadComments() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (_) {}
+      return [
+        {
+          id: 'seed-1',
+          author: '策展人',
+          cat: '整體賞析',
+          text: '歡迎在此留下評論或修改建議！勾選「附帶目前長卷位置」後，點擊評論中的「📍 定位」即可讓上下兩幅長卷自動捲動並縮放到對應細節。',
+          posX: 0.42,
+          posY: 0.5,
+          zoom: 1.0,
+          time: '系統提示',
+        },
+      ];
+    }
+
+    let comments = loadComments();
+
+    function saveComments() {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(comments)); } catch (_) {}
+    }
+
+    function getCurrentViewportNorm() {
+      const row = viewer.classList.contains('single-mode') ? realRow : origRow;
+      const cx = (row.scrollLeft + row.clientWidth / 2) / Math.max(1, row.scrollWidth);
+      const cy = (row.scrollTop + row.clientHeight / 2) / Math.max(1, row.scrollHeight);
+      return { posX: Number(cx.toFixed(4)), posY: Number(cy.toFixed(4)), zoom: Number(zoom.toFixed(2)) };
+    }
+
+    function jumpToLocation(c) {
+      setTab('compare');
+      setZoom(c.zoom || 1.0, origRow);
+      requestAnimationFrame(() => {
+        const left = c.posX * origRow.scrollWidth - origRow.clientWidth / 2;
+        const top = c.posY * origRow.scrollHeight - origRow.clientHeight / 2;
+        origRow.scrollLeft = left;
+        origRow.scrollTop = top;
+        realRow.scrollLeft = left;
+        realRow.scrollTop = top;
+      });
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+    }
+
+    function renderComments() {
+      commentCountEl.textContent = comments.length;
+      commentListEl.innerHTML = '';
+      comments.forEach((c) => {
+        const item = document.createElement('div');
+        item.className = 'comment-item';
+        const hasPos = typeof c.posX === 'number';
+        const posLabel = hasPos ? `位置 ${Math.round(c.posX * 100)}% · ${Math.round((c.zoom || 1) * 100)}%` : '全卷';
+        item.innerHTML = `
+          <div class="comment-meta">
+            <span><span class="comment-author">${escapeHtml(c.author)}</span> · ${escapeHtml(c.time)}</span>
+            <span class="comment-cat">${escapeHtml(c.cat)}</span>
+          </div>
+          <div class="comment-text">${escapeHtml(c.text)}</div>
+          <div class="comment-foot">
+            <span style="font-size:11px;color:var(--muted);">${posLabel}</span>
+            <div style="display:flex;gap:6px;">
+              ${hasPos ? `<button class="mini-btn btn-jump">📍 定位</button>` : ''}
+              <button class="mini-btn btn-del">刪除</button>
+            </div>
+          </div>
+        `;
+        if (hasPos) {
+          item.querySelector('.btn-jump').addEventListener('click', () => jumpToLocation(c));
+        }
+        item.querySelector('.btn-del').addEventListener('click', () => {
+          comments = comments.filter((x) => x.id !== c.id);
+          saveComments();
+          renderComments();
+        });
+        commentListEl.appendChild(item);
+      });
+    }
+
+    btnComments.addEventListener('click', () => {
+      const open = drawer.classList.toggle('open');
+      btnComments.classList.toggle('active', open);
+    });
+    document.getElementById('btn-drawer-close').addEventListener('click', () => {
+      drawer.classList.remove('open');
+      btnComments.classList.remove('active');
+    });
+
+    commentForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const author = document.getElementById('c-author').value.trim() || '訪客';
+      const cat = document.getElementById('c-cat').value;
+      const text = document.getElementById('c-text').value.trim();
+      if (!text) return;
+
+      const lockPos = document.getElementById('c-lock-pos').checked;
+      const loc = lockPos ? getCurrentViewportNorm() : {};
+      const now = new Date().toLocaleString('zh-TW', { hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+
+      comments.unshift({
+        id: `c-${Date.now()}`,
+        author,
+        cat,
+        text,
+        ...loc,
+        time: now,
+      });
+      saveComments();
+      renderComments();
+      document.getElementById('c-text').value = '';
+    });
+
+    document.getElementById('btn-gh-issue').addEventListener('click', () => {
+      const author = document.getElementById('c-author').value.trim() || '訪客';
+      const cat = document.getElementById('c-cat').value;
+      const text = document.getElementById('c-text').value.trim() || '（請填寫具體修改建議）';
+      const loc = getCurrentViewportNorm();
+      const title = encodeURIComponent(`[${cat}] ${text.slice(0, 36)}`);
+      const body = encodeURIComponent(
+        `### 觀賞者建議\n- **稱呼**：${author}\n- **分類**：${cat}\n- **長卷位置**：橫向 ${Math.round(loc.posX * 100)}% / 縮放 ${Math.round(loc.zoom * 100)}%\n\n### 內容\n${text}`
+      );
+      window.open(`https://github.com/spencer384/qianli-jiangshan-real/issues/new?title=${title}&body=${body}`, '_blank');
+    });
+
+    document.getElementById('btn-export-md').addEventListener('click', async () => {
+      const md = comments
+        .map((c) => `- **[${c.cat}]** (${c.author} @ ${typeof c.posX === 'number' ? `位置 ${Math.round(c.posX * 100)}%, ${Math.round((c.zoom || 1) * 100)}%` : '全卷'}): ${c.text}`)
+        .join('\n');
+      try {
+        await navigator.clipboard.writeText(md);
+        const btn = document.getElementById('btn-export-md');
+        btn.textContent = '✅ 已複製 Markdown 建議清單';
+        setTimeout(() => { btn.textContent = '📋 複製全部建議 (Markdown)'; }, 2000);
+      } catch (_) {}
+    });
+
+    renderComments();
+
+    // --- History & Guide Modal ---
+    const historyModal = document.getElementById('history-modal');
+    document.getElementById('btn-history').addEventListener('click', () => historyModal.classList.add('open'));
+    document.getElementById('btn-history-close').addEventListener('click', () => historyModal.classList.remove('open'));
+    historyModal.addEventListener('click', (e) => {
+      if (e.target === historyModal) historyModal.classList.remove('open');
+    });
   </script>
 </body>
 </html>
