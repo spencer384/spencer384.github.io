@@ -7,7 +7,7 @@
   <style>
     :root {
       --bg: #0e1316;
-      --panel: rgba(20, 27, 31, 0.9);
+      --panel: rgba(20, 27, 31, 0.92);
       --border: rgba(168, 198, 186, 0.25);
       --accent: #4ec49b;
       --gold: #f0c975;
@@ -31,7 +31,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 10px 20px;
-      background: rgba(14, 19, 22, 0.92);
+      background: rgba(14, 19, 22, 0.94);
       border-bottom: 1px solid var(--border);
       backdrop-filter: blur(8px);
       gap: 12px;
@@ -59,12 +59,12 @@
       color: var(--gold);
       margin-left: 8px;
     }
-    .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .controls { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
     .btn {
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 6px 12px;
+      padding: 6px 11px;
       border-radius: 6px;
       font-size: 12px;
       cursor: pointer;
@@ -77,49 +77,56 @@
       border-color: var(--accent);
       color: #ffffff;
     }
+    .sep {
+      width: 1px;
+      height: 20px;
+      background: var(--border);
+      margin: 0 2px;
+    }
+    .zoom-label {
+      font-size: 12px;
+      color: var(--gold);
+      min-width: 44px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
     .viewer {
       position: fixed;
       inset: 60px 0 42px 0;
       display: flex;
-      align-items: center;
-      overflow-x: auto;
-      overflow-y: hidden;
-      cursor: grab;
-      padding: 12px 24px;
-    }
-    .viewer:active { cursor: grabbing; }
-    .compare-stack {
-      display: flex;
       flex-direction: column;
-      gap: 10px;
-      height: 100%;
-      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
     }
     .scroll-row {
       position: relative;
-      height: calc((100vh - 140px) / 2);
-      display: flex;
-      align-items: center;
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #080b0d;
+      cursor: grab;
     }
+    .scroll-row:active { cursor: grabbing; }
     .viewer.single-mode .scroll-row.orig-row { display: none; }
-    .viewer.single-mode .scroll-row.real-row { height: calc(100vh - 136px); }
-    .scroll-row img {
+    .scroll-stage {
+      position: relative;
+      display: inline-block;
+      height: 100%;
+    }
+    .scroll-stage img {
       height: 100%;
       width: auto;
       max-width: none;
-      border-radius: 5px;
-      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.65);
+      display: block;
       user-select: none;
       -webkit-user-drag: none;
-      display: block;
     }
     .row-tag {
-      position: sticky;
-      left: 16px;
-      z-index: 5;
-      align-self: flex-start;
-      margin-top: 8px;
-      margin-right: -180px;
+      position: fixed;
+      left: 28px;
+      z-index: 6;
       padding: 3px 10px;
       border-radius: 4px;
       font-size: 11.5px;
@@ -129,14 +136,39 @@
       white-space: nowrap;
     }
     .row-tag.orig {
+      top: 78px;
       background: rgba(42, 34, 22, 0.85);
       border: 1px solid rgba(240, 201, 117, 0.5);
       color: var(--gold);
     }
     .row-tag.real {
+      top: calc(50% + 18px);
       background: rgba(16, 36, 30, 0.85);
       border: 1px solid rgba(78, 196, 155, 0.55);
       color: #8bf0cc;
+    }
+    .viewer.single-mode .row-tag.real { top: 78px; }
+    .sync-dot {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      margin: -9px 0 0 -9px;
+      border-radius: 50%;
+      border: 2px solid #ffd454;
+      background: rgba(255, 212, 84, 0.22);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+      pointer-events: none;
+      display: none;
+      z-index: 8;
+    }
+    .sync-dot::after {
+      content: "";
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 4px; height: 4px;
+      margin: -2px 0 0 -2px;
+      border-radius: 50%;
+      background: #ffd454;
     }
     .gallery {
       display: none;
@@ -206,26 +238,36 @@
       <div class="seal">實景<br/>對照</div>
       <div>
         <h1>江山千里 · 原稿與實境上下對照 (3D-Real)<span class="badge-wip">全 17 段完整版 · 24,960 × 1,080</span></h1>
-        <p>上方：清·方琮《仿王希孟江山千里卷》全卷原稿 ／ 下方：現實擬真攝影全卷重構（1:1 像素同步對齊）</p>
+        <p>上方：清·方琮《仿王希孟江山千里卷》全卷原稿 ／ 下方：現實擬真攝影全卷重構（1:1 同步縮放對照）</p>
       </div>
     </div>
     <div class="controls">
       <button id="btn-compare" class="btn active">上下對照全景</button>
       <button id="btn-single" class="btn">單看實境全景</button>
       <button id="btn-gallery" class="btn">分段對照一覽 (18 組)</button>
-      <button id="btn-auto" class="btn">自動橫向漫遊</button>
+      <div class="sep"></div>
+      <button id="btn-zoom-out" class="btn" title="縮小">－</button>
+      <span id="zoom-label" class="zoom-label">100%</span>
+      <button id="btn-zoom-in" class="btn" title="放大">＋</button>
+      <button id="btn-zoom-reset" class="btn" title="重設為 100%">1:1</button>
+      <div class="sep"></div>
+      <button id="btn-auto" class="btn">自動漫遊</button>
     </div>
   </header>
 
   <main id="pano-viewer" class="viewer">
-    <div class="compare-stack">
-      <div class="scroll-row orig-row">
-        <span class="row-tag orig">原稿全卷 · 清·方琮青綠山水</span>
-        <img src="./assets/scroll_orig_full.jpg" alt="原稿全卷 第01至17段" />
+    <div id="orig-row" class="scroll-row orig-row">
+      <span class="row-tag orig">原稿全卷 · 清·方琮青綠山水</span>
+      <div id="orig-stage" class="scroll-stage">
+        <img id="orig-img" src="./assets/scroll_orig_full.jpg" alt="原稿全卷 第01至17段" />
+        <div id="orig-dot" class="sync-dot"></div>
       </div>
-      <div class="scroll-row real-row">
-        <span class="row-tag real">實境全卷 · 現實擬真攝影重構</span>
-        <img src="./assets/scroll_real_full.jpg" alt="實境攝影全卷 第01至17段" />
+    </div>
+    <div id="real-row" class="scroll-row real-row">
+      <span class="row-tag real">實境全卷 · 現實擬真攝影重構</span>
+      <div id="real-stage" class="scroll-stage">
+        <img id="real-img" src="./assets/scroll_real_full.jpg" alt="實境攝影全卷 第01至17段" />
+        <div id="real-dot" class="sync-dot"></div>
       </div>
     </div>
   </main>
@@ -233,17 +275,24 @@
   <section id="gallery-view" class="gallery"></section>
 
   <footer>
-    <span>左右拖曳、滾輪捲動或啟用「自動橫向漫遊」即可同步對照全幅 17 段長卷（24,960 × 1,080）</span>
+    <span>拖曳平移 · Ctrl+滾輪（或右上角 ＋/－）同步放大比對 · 滑鼠懸停自動顯示鏡像準心</span>
     <span><a href="https://spencer384.github.io/" target="_blank">← 返回 風的異想實驗室</a></span>
   </footer>
 
   <script>
     const viewer = document.getElementById('pano-viewer');
+    const origRow = document.getElementById('orig-row');
+    const realRow = document.getElementById('real-row');
+    const origStage = document.getElementById('orig-stage');
+    const realStage = document.getElementById('real-stage');
+    const origDot = document.getElementById('orig-dot');
+    const realDot = document.getElementById('real-dot');
     const gallery = document.getElementById('gallery-view');
     const btnCompare = document.getElementById('btn-compare');
     const btnSingle = document.getElementById('btn-single');
     const btnGallery = document.getElementById('btn-gallery');
     const btnAuto = document.getElementById('btn-auto');
+    const zoomLabel = document.getElementById('zoom-label');
 
     const slices = [
       { title: '精選示範 · 正中主峰與山灣古村', orig: './assets/slices_orig/sample_section.png', real: './assets/sample_section_real.jpg', tag: '16:9 精選示範' },
@@ -279,6 +328,107 @@
       gallery.appendChild(card);
     });
 
+    // --- Synchronized Zoom & 2D Pan ---
+    let zoom = 1.0;
+    const MIN_ZOOM = 1.0;
+    const MAX_ZOOM = 4.5;
+    let isSyncing = false;
+
+    function syncScroll(source, target) {
+      if (isSyncing) return;
+      isSyncing = true;
+      target.scrollLeft = source.scrollLeft;
+      target.scrollTop = source.scrollTop;
+      requestAnimationFrame(() => { isSyncing = false; });
+    }
+
+    origRow.addEventListener('scroll', () => syncScroll(origRow, realRow));
+    realRow.addEventListener('scroll', () => syncScroll(realRow, origRow));
+
+    function setZoom(nextZoom, anchorRow = realRow, clientX = null, clientY = null) {
+      const clamped = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, nextZoom));
+      if (Math.abs(clamped - zoom) < 0.001) return;
+
+      const rect = anchorRow.getBoundingClientRect();
+      const px = clientX !== null ? clientX - rect.left : rect.width / 2;
+      const py = clientY !== null ? clientY - rect.top : rect.height / 2;
+      const normX = (anchorRow.scrollLeft + px) / Math.max(1, anchorRow.scrollWidth);
+      const normY = (anchorRow.scrollTop + py) / Math.max(1, anchorRow.scrollHeight);
+
+      zoom = clamped;
+      const pct = `${Math.round(zoom * 100)}%`;
+      origStage.style.height = pct;
+      realStage.style.height = pct;
+      zoomLabel.textContent = pct;
+
+      const nextLeft = normX * anchorRow.scrollWidth - px;
+      const nextTop = normY * anchorRow.scrollHeight - py;
+      origRow.scrollLeft = nextLeft;
+      origRow.scrollTop = nextTop;
+      realRow.scrollLeft = nextLeft;
+      realRow.scrollTop = nextTop;
+    }
+
+    document.getElementById('btn-zoom-in').addEventListener('click', () => setZoom(zoom * 1.35));
+    document.getElementById('btn-zoom-out').addEventListener('click', () => setZoom(zoom / 1.35));
+    document.getElementById('btn-zoom-reset').addEventListener('click', () => setZoom(1.0));
+
+    function attachRowInteractions(row, stage, otherDot) {
+      let dragging = false;
+      let startX = 0;
+      let startY = 0;
+      let sLeft = 0;
+      let sTop = 0;
+
+      row.addEventListener('mousedown', (e) => {
+        dragging = true;
+        autoPan = false;
+        btnAuto.classList.remove('active');
+        startX = e.clientX;
+        startY = e.clientY;
+        sLeft = row.scrollLeft;
+        sTop = row.scrollTop;
+      });
+      window.addEventListener('mouseup', () => { dragging = false; });
+      window.addEventListener('mousemove', (e) => {
+        if (!dragging) return;
+        row.scrollLeft = sLeft - (e.clientX - startX);
+        row.scrollTop = sTop - (e.clientY - startY);
+      });
+
+      row.addEventListener('dblclick', (e) => {
+        const next = zoom < 1.8 ? 2.2 : 1.0;
+        setZoom(next, row, e.clientX, e.clientY);
+      });
+
+      row.addEventListener('wheel', (e) => {
+        if (e.ctrlKey || e.metaKey) {
+          e.preventDefault();
+          const factor = e.deltaY < 0 ? 1.18 : 1 / 1.18;
+          setZoom(zoom * factor, row, e.clientX, e.clientY);
+        } else if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && zoom <= 1.05) {
+          e.preventDefault();
+          row.scrollLeft += e.deltaY * 1.6;
+        }
+      }, { passive: false });
+
+      // Mirror cursor crosshair dot on the opposite scroll
+      stage.addEventListener('mousemove', (e) => {
+        const r = stage.getBoundingClientRect();
+        const u = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+        const v = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
+        otherDot.style.display = 'block';
+        otherDot.style.left = `${u * 100}%`;
+        otherDot.style.top = `${v * 100}%`;
+      });
+      stage.addEventListener('mouseleave', () => {
+        otherDot.style.display = 'none';
+      });
+    }
+
+    attachRowInteractions(origRow, origStage, realDot);
+    attachRowInteractions(realRow, realStage, origDot);
+
     function setTab(mode) {
       btnCompare.classList.toggle('active', mode === 'compare');
       btnSingle.classList.toggle('active', mode === 'single');
@@ -299,30 +449,6 @@
     btnSingle.addEventListener('click', () => setTab('single'));
     btnGallery.addEventListener('click', () => setTab('gallery'));
 
-    let isDown = false;
-    let startX = 0;
-    let scrollLeft = 0;
-    viewer.addEventListener('mousedown', (e) => {
-      isDown = true;
-      autoPan = false;
-      btnAuto.classList.remove('active');
-      startX = e.pageX - viewer.offsetLeft;
-      scrollLeft = viewer.scrollLeft;
-    });
-    window.addEventListener('mouseup', () => { isDown = false; });
-    viewer.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - viewer.offsetLeft;
-      viewer.scrollLeft = scrollLeft - (x - startX) * 1.4;
-    });
-    viewer.addEventListener('wheel', (e) => {
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        e.preventDefault();
-        viewer.scrollLeft += e.deltaY * 1.6;
-      }
-    }, { passive: false });
-
     let autoPan = false;
     let dir = 1;
     btnAuto.addEventListener('click', () => {
@@ -331,9 +457,10 @@
     });
     function tick() {
       if (autoPan && viewer.style.display !== 'none') {
-        viewer.scrollLeft += 1.2 * dir;
-        if (viewer.scrollLeft + viewer.clientWidth >= viewer.scrollWidth - 2) dir = -1;
-        else if (viewer.scrollLeft <= 0) dir = 1;
+        const activeRow = viewer.classList.contains('single-mode') ? realRow : origRow;
+        activeRow.scrollLeft += 1.2 * dir;
+        if (activeRow.scrollLeft + activeRow.clientWidth >= activeRow.scrollWidth - 2) dir = -1;
+        else if (activeRow.scrollLeft <= 0) dir = 1;
       }
       requestAnimationFrame(tick);
     }
