@@ -205,14 +205,14 @@
     <div class="brand">
       <div class="seal">實景<br/>對照</div>
       <div>
-        <h1>江山千里 · 原稿與實境上下對照 (3D-Real)<span class="badge-wip">第 01–07 段已完成 · 待補齊完整版</span></h1>
-        <p>上方：清·方琮《仿王希孟江山千里卷》原稿 ／ 下方：現實擬真攝影重構（10,560 × 1,080 同步對齊）</p>
+        <h1>江山千里 · 原稿與實境上下對照 (3D-Real)<span class="badge-wip">全 17 段完整版 · 24,960 × 1,080</span></h1>
+        <p>上方：清·方琮《仿王希孟江山千里卷》全卷原稿 ／ 下方：現實擬真攝影全卷重構（1:1 像素同步對齊）</p>
       </div>
     </div>
     <div class="controls">
       <button id="btn-compare" class="btn active">上下對照全景</button>
       <button id="btn-single" class="btn">單看實境全景</button>
-      <button id="btn-gallery" class="btn">分段對照一覽 (9 組)</button>
+      <button id="btn-gallery" class="btn">分段對照一覽 (18 組)</button>
       <button id="btn-auto" class="btn">自動橫向漫遊</button>
     </div>
   </header>
@@ -220,12 +220,12 @@
   <main id="pano-viewer" class="viewer">
     <div class="compare-stack">
       <div class="scroll-row orig-row">
-        <span class="row-tag orig">原稿長卷 · 清·方琮青綠山水</span>
-        <img src="./assets/scroll_orig_01_to_07.jpg" alt="原稿長卷 第01至07段" />
+        <span class="row-tag orig">原稿全卷 · 清·方琮青綠山水</span>
+        <img src="./assets/scroll_orig_full.jpg" alt="原稿全卷 第01至17段" />
       </div>
       <div class="scroll-row real-row">
-        <span class="row-tag real">實境攝影 · 現實擬真重構</span>
-        <img src="./assets/scroll_real_01_to_07.jpg" alt="實境攝影長卷 第01至07段" />
+        <span class="row-tag real">實境全卷 · 現實擬真攝影重構</span>
+        <img src="./assets/scroll_real_full.jpg" alt="實境攝影全卷 第01至17段" />
       </div>
     </div>
   </main>
@@ -233,7 +233,7 @@
   <section id="gallery-view" class="gallery"></section>
 
   <footer>
-    <span>左右拖曳、滾輪捲動即可同步對照上下兩幅長卷 ｜ 第 08、09、11–17 段將於後續更新補齊</span>
+    <span>左右拖曳、滾輪捲動或啟用「自動橫向漫遊」即可同步對照全幅 17 段長卷（24,960 × 1,080）</span>
     <span><a href="https://spencer384.github.io/" target="_blank">← 返回 風的異想實驗室</a></span>
   </footer>
 
@@ -246,15 +246,24 @@
     const btnAuto = document.getElementById('btn-auto');
 
     const slices = [
-      { title: '精選示範 · 正中主峰與山灣古村', orig: './assets/slices_orig/sample_section.png', real: './assets/sample_section_real.jpg', tag: '16:9 對照' },
-      { title: '第 01 段 · 卷尾雙峰與村橋', orig: './assets/slices_orig/orig_01.png', real: './assets/slices_real/real_01.jpg', tag: '已併入長卷' },
-      { title: '第 02 段 · 左端平遠大湖', orig: './assets/slices_orig/orig_02.png', real: './assets/slices_real/real_02.jpg', tag: '已併入長卷' },
-      { title: '第 03 段 · 蘆洲沙嘴與漁村', orig: './assets/slices_orig/orig_03.png', real: './assets/slices_real/real_03.jpg', tag: '已併入長卷' },
-      { title: '第 04 段 · 左中銳峰群', orig: './assets/slices_orig/orig_04.png', real: './assets/slices_real/real_04.jpg', tag: '已併入長卷' },
-      { title: '第 05 段 · 中左層巒山寺', orig: './assets/slices_orig/orig_05.png', real: './assets/slices_real/real_05.jpg', tag: '已併入長卷' },
-      { title: '第 06 段 · 主峰西側群峰', orig: './assets/slices_orig/orig_06.png', real: './assets/slices_real/real_06.jpg', tag: '已併入長卷' },
-      { title: '第 07 段 · 正中特大主峰與飛瀑', orig: './assets/slices_orig/orig_07.png', real: './assets/slices_real/real_07.jpg', tag: '已併入長卷' },
-      { title: '第 10 段 · 右一大主山群', orig: './assets/slices_orig/orig_10.png', real: './assets/slices_real/real_10.jpg', tag: '單段已完成' },
+      { title: '精選示範 · 正中主峰與山灣古村', orig: './assets/slices_orig/sample_section.png', real: './assets/sample_section_real.jpg', tag: '16:9 精選示範' },
+      { title: '第 01 段 · 卷尾雙峰與村橋', orig: './assets/slices_orig/orig_01.png', real: './assets/slices_real/real_01.jpg', tag: '全卷 01/17' },
+      { title: '第 02 段 · 左端平遠大湖', orig: './assets/slices_orig/orig_02.png', real: './assets/slices_real/real_02.jpg', tag: '全卷 02/17' },
+      { title: '第 03 段 · 蘆洲沙嘴與漁村', orig: './assets/slices_orig/orig_03.png', real: './assets/slices_real/real_03.jpg', tag: '全卷 03/17' },
+      { title: '第 04 段 · 左中銳峰群', orig: './assets/slices_orig/orig_04.png', real: './assets/slices_real/real_04.jpg', tag: '全卷 04/17' },
+      { title: '第 05 段 · 中左層巒山寺', orig: './assets/slices_orig/orig_05.png', real: './assets/slices_real/real_05.jpg', tag: '全卷 05/17' },
+      { title: '第 06 段 · 主峰西側群峰', orig: './assets/slices_orig/orig_06.png', real: './assets/slices_real/real_06.jpg', tag: '全卷 06/17' },
+      { title: '第 07 段 · 正中主峰西翼', orig: './assets/slices_orig/orig_07.png', real: './assets/slices_real/real_07.jpg', tag: '全卷 07/17' },
+      { title: '第 08 段 · 中央水灣帆影', orig: './assets/slices_orig/orig_08.png', real: './assets/slices_real/real_08.jpg', tag: '全卷 08/17' },
+      { title: '第 09 段 · 雙峰峽灣古村', orig: './assets/slices_orig/orig_09.png', real: './assets/slices_real/real_09.jpg', tag: '全卷 09/17' },
+      { title: '第 10 段 · 右一大主山群', orig: './assets/slices_orig/orig_10.png', real: './assets/slices_real/real_10.jpg', tag: '全卷 10/17' },
+      { title: '第 11 段 · 飛瀑峭壁與山寺', orig: './assets/slices_orig/orig_11.png', real: './assets/slices_real/real_11.jpg', tag: '全卷 11/17' },
+      { title: '第 12 段 · 雙層亭橋與潭水', orig: './assets/slices_orig/orig_12.png', real: './assets/slices_real/real_12.jpg', tag: '全卷 12/17' },
+      { title: '第 13 段 · 右二主山群與水榭', orig: './assets/slices_orig/orig_13.png', real: './assets/slices_real/real_13.jpg', tag: '全卷 13/17' },
+      { title: '第 14 段 · 雙瀑山莊與河洲', orig: './assets/slices_orig/orig_14.png', real: './assets/slices_real/real_14.jpg', tag: '全卷 14/17' },
+      { title: '第 15 段 · 煙波灣與松林半島', orig: './assets/slices_orig/orig_15.png', real: './assets/slices_real/real_15.jpg', tag: '全卷 15/17' },
+      { title: '第 16 段 · 右岸木橋與懸崖', orig: './assets/slices_orig/orig_16.png', real: './assets/slices_real/real_16.jpg', tag: '全卷 16/17' },
+      { title: '第 17 段 · 卷首孤峰與水村', orig: './assets/slices_orig/orig_17.png', real: './assets/slices_real/real_17.jpg', tag: '全卷 17/17' },
     ];
 
     slices.forEach((s) => {
